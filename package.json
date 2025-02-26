@@ -1,6 +1,6 @@
 {
-  "name": "@axon/hefeng-mcp-weather",
-  "version": "0.1.0",
+  "name": "hefeng-mcp-weather",
+  "version": "0.1.1",
   "description": "an mcp server for hefeng weather api",
   "main": "dist/index.js",
   "bin": "dist/index.js",

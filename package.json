@@ -1,0 +1,38 @@
+{
+  "name": "@axon/hefeng-mcp-weather",
+  "version": "0.1.0",
+  "description": "an mcp server for hefeng weather api",
+  "main": "dist/index.js",
+  "bin": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "weather",
+    "hefeng-weather"
+  ],
+  "author": "shanggqm",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shanggqm/hefeng-mcp-weather.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shanggqm/hefeng-mcp-weather/issues"
+  },
+  "homepage": "https://github.com/shanggqm/hefeng-mcp-weather#readme"
+}

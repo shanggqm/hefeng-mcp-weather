@@ -35,6 +35,19 @@ Add this to your claude_desktop_config.json
 }
 ```
 
+For free subscription (dev API), add the `--dev` flag:
+
+```json
+{
+  "mcpServers": {
+    "hefeng-weather": {
+      "command": "npx",
+      "args": ["hefeng-mcp-weather@latest", "--apiKey=${API_KEY}", "--dev"]
+    }
+  }
+}
+```
+
 # License
 
 This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.

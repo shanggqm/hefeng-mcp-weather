@@ -6,8 +6,10 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-const HEFENG_API_BASE = "https://devapi.qweather.com/v7";
+const HEFENG_API_BASE = "https://api.qweather.com/v7";
+const HEFENG_DEV_API_BASE = "https://devapi.qweather.com/v7";
 let HEFENG_API_KEY = ""; // 默认API密钥
+let IS_DEV_MODE = false; // 添加开发模式标志
 
 const apiKeyArg = process.argv.find(arg => arg.startsWith('--apiKey='));
 if (apiKeyArg) {
@@ -16,6 +18,12 @@ if (apiKeyArg) {
         console.log(`使用命令行参数中的API密钥: ${apiKey}`);
         HEFENG_API_KEY = apiKey;
     }
+}
+
+const devModeArg = process.argv.includes('--dev');
+if (devModeArg) {
+    console.log('启用免费订阅');
+    IS_DEV_MODE = true;
 }
 
 // Define Zod schemas for validation
@@ -122,6 +130,7 @@ interface HeFengWeatherHourlyResponse {
 // Handle tool execution
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
+    const baseUrl = IS_DEV_MODE ? HEFENG_DEV_API_BASE : HEFENG_API_BASE;
 
     try {
         if (name === "get-weather") {
@@ -129,7 +138,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
             if (days === 'now') {
                 // Get current weather data
-                const weatherUrl = `${HEFENG_API_BASE}/weather/now?location=${location}&key=${HEFENG_API_KEY}`;
+                const weatherUrl = `${baseUrl}/weather/now?location=${location}&key=${HEFENG_API_KEY}`;
                 const weatherData = await makeHeFengRequest<HeFengWeatherNowResponse>(weatherUrl);
 
                 if (!weatherData || !weatherData.now) {
@@ -150,7 +159,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 return { content: [{ type: "text", text: weatherText }] };
             } else if (['24h', '72h', '168h'].includes(days)) {
                 // Get hourly forecast data
-                const weatherUrl = `${HEFENG_API_BASE}/weather/${days}?location=${location}&key=${HEFENG_API_KEY}`;
+                const weatherUrl = `${baseUrl}/weather/${days}?location=${location}&key=${HEFENG_API_KEY}`;
                 const weatherData = await makeHeFengRequest<HeFengWeatherHourlyResponse>(weatherUrl);
 
                 if (!weatherData || !weatherData.hourly) {
@@ -177,7 +186,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             } else {
                 // Get daily forecast weather data
                 const daysNum = parseInt(days);
-                const weatherUrl = `${HEFENG_API_BASE}/weather/${days}?location=${location}&key=${HEFENG_API_KEY}`;
+                const weatherUrl = `${baseUrl}/weather/${days}?location=${location}&key=${HEFENG_API_KEY}`;
                 const weatherData = await makeHeFengRequest<HeFengWeatherDailyResponse>(weatherUrl);
 
                 if (!weatherData || !weatherData.daily) {
